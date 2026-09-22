@@ -1,1 +1,27 @@
-aaaaaaaaaaaaaaaaa
+int PIR = 5;
+int ledPin = 13;
+int stav_button = 0;
+void setup()
+{
+  pinMode(13, OUTPUT);
+  pinMode(5, INPUT);
+  pinMode(12, INPUT);
+
+}
+
+void loop()
+{
+ stav_button = digitalRead (12);
+   PIR = digitalRead(5);
+  ledPin = digitalRead(13);
+  if(stav_button == HIGH){
+   digitalWrite(13,HIGH);
+   delay(1000);                  
+   digitalWrite(13,LOW);
+  }
+  if(PIR == HIGH) {
+    digitalWrite (13,HIGH);
+    delay(1000);
+    digitalWrite(13, LOW);
+  }
+}
