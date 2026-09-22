@@ -1,1 +1,61 @@
-aaaaaaaaaaaaaaaaaaaaaaaa
+#include <Keypad.h>
+ #include<Servo.h>
+ Servo servo1;
+ char* password = "047#";
+ int caracteres = 2;
+ const int ledVerde = 11;
+ const int ledVermelho = 12;
+ const int Pin_Servo = 10;
+ int posicao = 0;
+ const byte N_Lin = 4;
+ const byte N_Col = 4;
+ char m_tec[N_Lin][N_Col] = {
+  {'1', '2', '3', 'A'},
+  {'4', '5', '6', 'B'},
+  {'7', '8', '9', 'C'},
+  {'*', '0', '#', 'D'}
+ };
+ byte Pin_Lin[N_Lin] = {9, 8, 7, 6};
+ byte Pin_Col[N_Col] = {5, 4, 3, 2};
+ /* Inicializa o teclado */
+ Keypad tec = Keypad( makeKeymap(m_tec), Pin_Lin, Pin_Col, N_Lin,
+N_Col);
+ void setup() {
+  pinMode(ledVermelho, OUTPUT);
+  pinMode(ledVerde, OUTPUT);
+  servo1.attach(Pin_Servo);
+  Serial.begin(9600);
+  Serial.println("Entre com a senha...");
+  Serial.println();
+  trancada();
+  servo1.write(90);
+ }
+ void loop() {
+  char key = tec.getKey();
+  if (key == '*' || key == '#') {
+    posicao = 0;
+    trancada();
+  }
+ 
+  if (key == password[posicao]) {
+    posicao ++;
+  }
+  if (posicao == caracteres) {
+    destrancada();
+  }
+  delay(100);
+ }
+ void trancada()
+ {
+  digitalWrite(ledVermelho, HIGH);
+  digitalWrite(ledVerde, LOW);
+  servo1.write(90);
+  Serial.println("TRANCADA");
+ }
+ void destrancada()
+ {
+  digitalWrite(ledVerde, HIGH);
+ digitalWrite(ledVermelho, LOW);
+ servo1.write(180);
+ Serial.println("ABERTA");
+ }
